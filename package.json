@@ -5,8 +5,14 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "clear && node deploy_commands.js && node main.js"
+    "start": "clear && node deploy_commands.js && npx nodemon main.ts"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@metaplex-foundation/mpl-token-metadata": "^1.2.5",
+    "@solana/web3.js": "^1.36.0",
+    "circular-json": "^0.5.9",
+    "mongoose": "^6.2.8"
+  }
 }

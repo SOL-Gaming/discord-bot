@@ -7,6 +7,20 @@ const commands = [
     new SlashCommandBuilder()
     .setName('verify')
     .setDescription('Allows holders to verify the ownership of their NFT to lik it to their Discord account.'),
+
+    new SlashCommandBuilder()
+		.setName('play')
+		.setDescription('Allows a user to play.'),
+
+	new SlashCommandBuilder()
+		.setName('rpc')
+		.setDescription('Allows a user to play rock paper scissors.')
+		.addUserOption(option =>
+            option
+                .setName('user')
+                .setDescription('The user you want to hug')
+                .setRequired(true)
+        ),
 ]
 	.map(command => command.toJSON());
 
