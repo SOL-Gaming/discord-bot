@@ -20,9 +20,11 @@ module.exports = {
                 .setRequired(true)
         ),
 	async execute(interaction) {
-        //const sender_wallet = await getWallet(interaction.member.user.id);
-        //const partner_wallet = await getWallet(interaction.options.getUser('user').id);
-        //await interaction.channel.send(sender_wallet);
+        console.log("Sender user id: " + interaction.member.user.id.toString())
+        console.log("Opponent user id: " + interaction.options.getUser('user').id.toString())
+        const sender_wallet = await getWallet(interaction.member.user.id.toString());
+        const partner_wallet = await getWallet(interaction.options.getUser('user').id.toString());
+        await interaction.channel.send(sender_wallet);
         const start_embed = new MessageEmbed()
             .setTitle('Starting screen')
             .setColor("#32CD32")
@@ -37,9 +39,7 @@ module.exports = {
 					.setStyle('PRIMARY'),
 		);
 
-        const has_perms = await hasNft(interaction.member.user.id);
         const debug_perms = true;
-        const partner_has_perms = await hasNft(interaction.options.getUser('user').id);
 
         if(debug_perms) {
             
@@ -131,7 +131,6 @@ module.exports = {
                                 case "p1": 
                                     //await addWin(interaction.member.user.id);
                                     //await addLoss(partner_id);
-                                    let sender_wallet = "4X4mk7ZHHsBmJcsvqQhVLA5hHoRAsArf33GTxjN3KCYj";
                                     await airdrop(sender_wallet, 100).then(async sig => {
                                         await interaction.channel.send(`SPL signature: ${sig}`);
                                     });
@@ -141,8 +140,6 @@ module.exports = {
                                 case "p2": 
                                     //await addWin(partner_id);
                                     //await addLoss(interaction.member.user.id);
-
-                                    let partner_wallet = "H3DRjfhvKzt3S9jn3qQqtS5rGaRsF6hEMaTWmsHi8fKo";
 
                                     await airdrop(partner_wallet, 10).then(async sig => {
                                         await interaction.channel.send(`SPL signature: ${sig}`);

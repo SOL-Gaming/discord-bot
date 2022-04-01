@@ -9,7 +9,7 @@ export async function getWallet(userid) {
     await client.connect();
     const database = client.db('myFirstDatabase');
     const users = database.collection('users');
-    const query = { user_id: userid.toString() };
+    const query = { user_id: userid};
     const res = await users.findOne(query);
     try {
         const wallet = res.wallet_address;
