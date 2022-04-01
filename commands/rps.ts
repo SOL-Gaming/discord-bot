@@ -6,6 +6,9 @@ const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 const {addWin} = require("../helpers/addWin");
 const {addLoss} = require("../helpers/addLoss");
 
+import {airdrop} from "../helpers/airdropSPL";
+import {getWallet} from "../helpers/getWallet";
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('rpc')
@@ -17,7 +20,9 @@ module.exports = {
                 .setRequired(true)
         ),
 	async execute(interaction) {
-
+        //const sender_wallet = await getWallet(interaction.member.user.id);
+        //const partner_wallet = await getWallet(interaction.options.getUser('user').id);
+        //await interaction.channel.send(sender_wallet);
         const start_embed = new MessageEmbed()
             .setTitle('Starting screen')
             .setColor("#32CD32")
@@ -33,10 +38,10 @@ module.exports = {
 		);
 
         const has_perms = await hasNft(interaction.member.user.id);
-        
+        const debug_perms = true;
         const partner_has_perms = await hasNft(interaction.options.getUser('user').id);
 
-        if(has_perms && partner_has_perms) {
+        if(debug_perms) {
             
             await interaction.reply({ components: [row], embeds: [start_embed], fetchReply: true});
             const partner_mention = await interaction.channel.send(`${interaction.options.getUser('user')} you have been challenged to play!`);
@@ -77,10 +82,11 @@ module.exports = {
                     
                     //console.log(interaction.user);
                     let name = `${interaction.user.username}-${interaction.options.getUser('user').username}`;
+                    
                     interaction.guild.channels.create(name, {
                         type: 'text',
                     }).then(async(channel) => {
-                        channel.setParent("958135307130249256");
+                        channel.setParent("959455341756678164");
                         await channel.send({embeds: [game_embed], components: [actions_row]});
 
                         channel.permissionOverwrites.create(channel.guild.roles.everyone, { VIEW_CHANNEL: true, SEND_MESSAGES: false });
@@ -123,13 +129,25 @@ module.exports = {
                             
                             switch (winner) {
                                 case "p1": 
-                                    await addWin(interaction.member.user.id);
-                                    await addLoss(partner_id);
+                                    //await addWin(interaction.member.user.id);
+                                    //await addLoss(partner_id);
+                                    let sender_wallet = "4X4mk7ZHHsBmJcsvqQhVLA5hHoRAsArf33GTxjN3KCYj";
+                                    await airdrop(sender_wallet, 100).then(async sig => {
+                                        await interaction.channel.send(`SPL signature: ${sig}`);
+                                    });
+                                    
                                     await channel.send({content:`${interaction.member} won`})
                                     break;
                                 case "p2": 
-                                    await addWin(partner_id);
-                                    await addLoss(interaction.member.user.id);
+                                    //await addWin(partner_id);
+                                    //await addLoss(interaction.member.user.id);
+
+                                    let partner_wallet = "H3DRjfhvKzt3S9jn3qQqtS5rGaRsF6hEMaTWmsHi8fKo";
+
+                                    await airdrop(partner_wallet, 10).then(async sig => {
+                                        await interaction.channel.send(`SPL signature: ${sig}`);
+                                    });
+
                                     await channel.send({content:`${interaction.options.getUser('user')} won`});
                                     break;
                                 case "": 
