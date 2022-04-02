@@ -1,11 +1,15 @@
-import {getWallet} from "../helpers/getWallet";
+import {getWalletNfts} from "../helpers/getWalletNfts";
+import {Metadata} from "@metaplex-foundation/mpl-token-metadata";
+import {clusterApiUrl, Connection, PublicKey} from "@solana/web3.js";
+import {hasNft} from "../helpers/hasNft";
+
+const connection = new Connection(clusterApiUrl('devnet'));
 
 async function run() {
-    const my_wallet = await getWallet("924694666350309416");
-    const pekka_wallet = await getWallet("247363369168797697");
+    const r = await hasNft("97748027954974720");
 
-    console.log(`My wallet: ${JSON.stringify(my_wallet)}`);
-    console.log(`Pekka's wallet: ${JSON.stringify(pekka_wallet)}`);
+    console.log(r);
+
 }
 
 run();

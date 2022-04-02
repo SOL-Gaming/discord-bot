@@ -24,7 +24,7 @@ module.exports = {
         console.log("Opponent user id: " + interaction.options.getUser('user').id.toString())
         const sender_wallet = await getWallet(interaction.member.user.id.toString());
         const partner_wallet = await getWallet(interaction.options.getUser('user').id.toString());
-        await interaction.channel.send(sender_wallet);
+
         const start_embed = new MessageEmbed()
             .setTitle('Starting screen')
             .setColor("#32CD32")
@@ -41,14 +41,17 @@ module.exports = {
 
         const debug_perms = true;
 
+        const partner_id = interaction.options.getUser('user').id;
+
+        const partner_perms = hasNft(interaction.options.getUser('user').id.toString());
+        const sender_perms = hasNft(interaction.member.user.id.toString());
+
         if(debug_perms) {
             
             await interaction.reply({ components: [row], embeds: [start_embed], fetchReply: true});
             const partner_mention = await interaction.channel.send(`${interaction.options.getUser('user')} you have been challenged to play!`);
         
             const collector = interaction.channel.createMessageComponentCollector({ time: 15000 });
-        
-            const partner_id = interaction.options.getUser('user').id;
 
             collector.on('collect', async i => {
                 
@@ -129,19 +132,20 @@ module.exports = {
                             
                             switch (winner) {
                                 case "p1": 
-                                    //await addWin(interaction.member.user.id);
-                                    //await addLoss(partner_id);
+                                    await addWin(interaction.member.user.id);
+                                    await addLoss(partner_id);
                                     await airdrop(sender_wallet, 100).then(async sig => {
+                                        console.log(sig);
                                         await interaction.channel.send(`SPL signature: ${sig}`);
                                     });
                                     
                                     await channel.send({content:`${interaction.member} won`})
                                     break;
                                 case "p2": 
-                                    //await addWin(partner_id);
-                                    //await addLoss(interaction.member.user.id);
-
+                                    await addWin(partner_id);
+                                    await addLoss(interaction.member.user.id);
                                     await airdrop(partner_wallet, 10).then(async sig => {
+                                        console.log(sig);
                                         await interaction.channel.send(`SPL signature: ${sig}`);
                                     });
 
