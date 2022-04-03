@@ -26,6 +26,12 @@ export async function hasNft(userid) {
 
     for(let nft of nfts.value) {
         const query_mint = nft.account.data.parsed.info.mint;
-        return !!whilelist.includes(query_mint.toString());
+        if(whilelist.includes(query_mint.toString())) {
+            return true;
+        } else {
+            return false;
+        }
     }
+
+    return true;
 }

@@ -107,6 +107,8 @@ module.exports = {
                             let array = ["p1", "p2"];
                             let winner = "";
 
+                            // P1 = ich
+
                             if(player_1_choice === "rock_move" && player_2_choice === "paper_move") {
                                 winner = "p2";
                             } else if(player_1_choice === "rock_move" && player_2_choice === "scissors_move") {
@@ -131,8 +133,8 @@ module.exports = {
                             }
                             
                             switch (winner) {
-                                case "p1": 
-                                    await addWin(interaction.member.user.id);
+                                case "p1":
+                                    await addWin(interaction.member.user.id.toString());
                                     await addLoss(partner_id);
                                     await airdrop(sender_wallet, 100).then(async sig => {
                                         console.log(sig);
@@ -143,7 +145,7 @@ module.exports = {
                                     break;
                                 case "p2": 
                                     await addWin(partner_id);
-                                    await addLoss(interaction.member.user.id);
+                                    await addLoss(interaction.member.user.id.toString());
                                     await airdrop(partner_wallet, 10).then(async sig => {
                                         console.log(sig);
                                         await interaction.channel.send(`SPL signature: ${sig}`);
@@ -164,6 +166,7 @@ module.exports = {
                                 console.log("Partner logged the move: " + event.customId);
                                 player_1_choice = event.customId;
                                 player_1_sent = true;
+                                await event.reply({content: "You successfully selected your action. ", ephemeral: true});
 
                                 if(player_2_sent === true) {
                                     console.log("Both are done");
