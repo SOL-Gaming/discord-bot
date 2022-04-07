@@ -1,37 +1,25 @@
-import {getWalletNfts} from '../helpers/getWalletNfts';
-import {Connection, clusterApiUrl, PublicKey} from "@solana/web3.js";
+import { PublicKey } from '@solana/web3.js';
+import { clusterApiUrl, Connection, Keypair, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import {Metadata} from "@metaplex-foundation/mpl-token-metadata";
-const mongoose = require("mongoose");
-const {db_uri} = require("../config.json");
-const User = require("../handler/user.js");
-const { MongoClient } = require("mongodb");
+import { getWallet } from '../helpers/getWallet';
 
+export async function hasNft(mint) {
+    let metadataProgramIdKey = new PublicKey( "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s" );
 
-import whilelist from "../handler/whitelist.json";
+    let [address, nonce] = await PublicKey.findProgramAddress( [ Buffer.from("metadata", "utf8"), metadataProgramIdKey.toBuffer(), new PublicKey(mint).toBuffer(), ], metadataProgramIdKey );
 
+    const connection = new Connection(clusterApiUrl('devnet'));
 
-const connection = new Connection(clusterApiUrl('devnet'));
+    const meta_oc = await Metadata.fromAccountAddress(connection,address)
 
-export async function hasNft(userid) {
-    const client = new MongoClient(db_uri);
-    await client.connect();
-
-    const database = client.db('myFirstDatabase');
-    const users = database.collection('users');
-    const query = { user_id: userid };
-    const res = await users.findOne(query);
-    const nfts = await getWalletNfts(res.wallet_address);
-    console.log(nfts);
-
-
-    for(let nft of nfts.value) {
-        const query_mint = nft.account.data.parsed.info.mint;
-        if(whilelist.includes(query_mint.toString())) {
+    
+    try {
+        if(meta_oc.collection?.key.toString() === "Df5ZwzMPAFSatLjZTXTozRyVPHbYtHLuuf7ZnfbsoigS") {
             return true;
         } else {
             return false;
         }
-    }
-
-    return true;
+    } catch {
+        return false;
+    }  
 }

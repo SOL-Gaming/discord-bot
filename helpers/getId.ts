@@ -12,9 +12,10 @@ import {clusterApiUrl, Connection, PublicKey} from "@solana/web3.js";
 export async function getId(userId) {
 
     const wallet_address = await getWallet(userId);
-    const nfts = await getWalletNfts(wallet_address);
+    //const nfts = await getWalletNfts(wallet_address);
 
     let metadataProgramIdKey = new PublicKey( "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s" );
+    // AXUMpLK9X59aqZkBne5mHDsxxirK28MCQrvtvEEYVQt1 is the wallet to target
 
     let [address, nonce] = await PublicKey.findProgramAddress( [ Buffer.from("metadata", "utf8"), metadataProgramIdKey.toBuffer(), new PublicKey("AXUMpLK9X59aqZkBne5mHDsxxirK28MCQrvtvEEYVQt1").toBuffer(), ], metadataProgramIdKey );
 

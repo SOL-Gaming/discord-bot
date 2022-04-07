@@ -16,9 +16,7 @@ export async function airdrop(wallet, amount) {
             mint,
             senderKeypair.publicKey
         );
-    
-        //console.log(senderTokenAccount.address.toString());
-    
+        
         const recieverTokenAccount = await getOrCreateAssociatedTokenAccount(
             connection,
             senderKeypair,

@@ -42,7 +42,7 @@ module.exports = {
         const debug_perms = true;
 
         const partner_id = interaction.options.getUser('user').id;
-
+        //FIXME: Update to new hasNFT standard.
         const partner_perms = hasNft(interaction.options.getUser('user').id.toString());
         const sender_perms = hasNft(interaction.member.user.id.toString());
 

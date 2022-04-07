@@ -8,8 +8,13 @@ const {
     token
 } = require('./config.json');
 
+import { keyWordHandler } from "./handlers/keyWord";
+
 const client = new Client({
-    intents: [Intents.FLAGS.GUILDS]
+    intents: [
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILDS
+     ]
 });
 client.commands = new Collection();
 
@@ -26,10 +31,10 @@ client.once('ready', () => {
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
     const command = client.commands.get(interaction.commandName);
-
-	if (!command) {
+    //console.log(command);
+	/*if (!command) {
         try { await interaction.reply({ content: 'This command was not found! Please use `/help` for a detailed help list.'}) } catch (err) {console.log("ERR")}
-    }
+    }*/
 
 	try {
 		await command.execute(interaction);
@@ -49,6 +54,12 @@ client.on('interactionCreate', async interaction => {
     if(interaction.customId === "interaction_verification_role") {
         await interaction.update({ content: 'A button was clicked!', components: [] });
     }
+});
+
+
+client.on('messageCreate', async message => {
+    //console.log(message);
+	//await keyWordHandler(message.author, message.content);
 });
 
 client.login(token);

@@ -16,7 +16,6 @@ export async function getWallet(userid) {
         return wallet;
     }
     catch(e) {
-        console.log(e, res);
         return false;
     }
 }
