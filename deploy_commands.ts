@@ -21,9 +21,13 @@ const commands = [
                 .setDescription('The user you want to hug')
                 .setRequired(true)
         ),
-  new SlashCommandBuilder()
+      new SlashCommandBuilder()
         .setName('meta')
         .setDescription('Gets the metadata of your NFT!'),
+        
+      new SlashCommandBuilder()
+        .setName('testboss')
+        .setDescription('Creates a new Boss to test.'),
             
 ]
 	.map(command => command.toJSON());
