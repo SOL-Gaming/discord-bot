@@ -2,6 +2,7 @@ const {hasNft} = require('../helpers/hasNft');
 import { Metadata } from '@metaplex-foundation/mpl-token-metadata';
 import { PublicKey } from '@solana/web3.js';
 import { clusterApiUrl, Connection, Keypair, LAMPORTS_PER_SOL } from '@solana/web3.js';
+import e from 'express';
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu} = require('discord.js');
 
@@ -14,7 +15,7 @@ import { getJson } from "../helpers/getJson";
 import {getWallet} from "../helpers/getWallet";
 import { getWalletNfts } from "../helpers/getWalletNfts";
 
-import {data} from '../main';
+import {battle_attendants, data} from '../main';
 
 module.exports = { data: new SlashCommandBuilder()
     .setName('testboss')
@@ -22,7 +23,7 @@ module.exports = { data: new SlashCommandBuilder()
 
 
     async execute(interaction) {
-        const channel_id = "962428943531642920"
+        const channel_id = "963187739451347004"
         const channel = interaction.client.channels.cache.get(channel_id);
     
         const bossBattleEmbed = new MessageEmbed()
@@ -51,6 +52,11 @@ module.exports = { data: new SlashCommandBuilder()
 
         collector.on('collect', async inter => {
             if(inter.customId === "join") {
+
+                if(battle_attendants.length > 1)  {
+                    await interaction.reply("THIS FIGHT IS OUTDATED.");
+                    await interaction.message.edit("This fight was already fought.");
+                } else {
 
                 await inter.deferReply({ephemeral: true});
                 const options: any[] = [];
@@ -94,8 +100,8 @@ module.exports = { data: new SlashCommandBuilder()
                     
                     await inter.editReply({embeds: [joinEmbed], components: [row], ephemeral: true});
              }}
-            
+            }
         })
 
-    
+        
     }}

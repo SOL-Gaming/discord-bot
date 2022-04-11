@@ -1,9 +1,9 @@
 export class Boss {
-    weakness: Number;
+    damage: Number;
     health: Number;
 
-    constructor(weakness, health) {
-        this.weakness = weakness;
+    constructor(damage, health) {
+        this.damage = damage;
         this.health = health;
     }
 }

@@ -19,7 +19,7 @@ for (const file of commandFiles) {
     client.commands.set(command.data.name, command);
 }
 
-const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+const eventFiles = fs.readdirSync('./events');
 
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
@@ -35,6 +35,8 @@ export var battle_attendants: any[] = [];
 export let fighters: any[] =  [];
 
 export function resetFighters() {fighters = []}
+export function resetAll() {fighters = []
+	battle_attendants = []}
 
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
